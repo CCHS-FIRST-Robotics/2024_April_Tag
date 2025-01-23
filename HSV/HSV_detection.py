@@ -9,9 +9,9 @@ def detect_color(frame, lowerHSV, upperHSV):
 
     kernel = np.ones((5, 5), np.uint8) #what if uint16 instead? or even 32 bits? What happens?
 
-    img = cv2.bitwise_and(frame, frame, mask=mask)
-    img = cv2.erode(img, kernel, iterations=1) 
-    img = cv2.dilate(img, kernel, iterations=1) 
+    img = cv2.bitwise_and(frame, frame, mask=mask) #mask for black spaces
+    img = cv2.erode(img, kernel, iterations=1) #remove pixels
+    img = cv2.dilate(img, kernel, iterations=1) #add them to boundary
     img = cv2.Canny(img, 40, 180) 
 
     if len(detect) > 0 and len(detect[1]):
@@ -22,7 +22,7 @@ def detect_color(frame, lowerHSV, upperHSV):
         midPoint2 = (int(detect[1].mean()), int(detect[0].mean()))
         color = (0, 0, 255) 
         color2 = (0, 255, 255)
-        cv2.circle(img, midPoint, 7, color, 2)
+        cv2.circle(img, midPoint, 7, color, 2) #
         cv2.circle(img, midPoint2, 12, color2, 2)
 
     return img
